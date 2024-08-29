@@ -33,7 +33,7 @@ test = 1
 #Definir a escala padrao
 focar_janela('Ragnarok Origin: ROO')
 melhor_escala = imgProcessing.DefinirEscala('escala')
-
+aaaaaaaaaaaaaaaaa
 if test == 0:   
     while True:
         #Buffs iniciais
