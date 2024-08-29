@@ -1,0 +1,36 @@
+--- Análise Atualizada ---
+Total de testes: 10
+Média dos valores: 1135.30
+Maior valor: 1157 (Teste 4)
+Menor valor: 1120 (Teste 3)
+
+Teste 1:
+DMG: 1141M
+
+Teste 2:
+DMG: 1137M
+
+Teste 3:
+DMG: 1120M
+
+Teste 4:
+DMG: 1157M
+
+Teste 5:
+DMG: 1153M
+
+Teste 6:
+DMG: 1137
+
+Teste 7:
+DMG: 1125
+
+Teste 8:
+DMG: 1121M
+
+Teste 9:
+DMG: 1130M
+
+Teste 10:
+DMG: 1132M
+
