@@ -12,7 +12,7 @@ def main():
     build = 1
     #0 = OFF | 1 = ON 
     hplock = 1
-    test = 0
+    test = 1
  #Inicio
 #Criando instancias e definindo escala padrao
     GameProcessor.focar_janela('Ragnarok Origin: ROO')
@@ -56,23 +56,22 @@ def main():
             click_processor.Click(barao)
             mvp9 = click_processor.FindClickWait('mvp8','mvp9')
             click_processor.Click(mvp9)
-            click_processor.FindClick('mvp10')
+            click_processor.FindClick('mvp10',0.7)
             if hplock == 1:
-                click_processor.FindClick('hplock')
+                click_processor.FindClick('hplock',0.7)
 
             #Iniciar o combate
             pyautogui.keyDown('w')
             time.sleep(0.7)
             pyautogui.keyUp('w')
             pyautogui.press('k')
-            time.sleep(60.2)
+            time.sleep(10.2)
             #WaitImage('30seg',0.89)
 
             #Finalizando combate
-            click_processor.FindClick('pause')
+            click_processor.FindClick('pause',0.7)
             time.sleep(0.5)
-            image_processor.tirar_print('dmg', 0.7, 'images/print_dmg.png')
-            image_processor.tirar_print('dps', 0.65, 'images/print_dps.png')
+            image_processor.tirar_print('dmg', 0.3, 'images/print_dmg.png')
             texto = image_processor.ler_texto_imagem('print_dmg')
             txt_processor.salvar_texto_no_arquivo('resultado.txt', texto)
 
@@ -100,9 +99,12 @@ def main():
     else:
         #teste
 
-        game_processor.Buffar('buff1','5')
+        image_processor.tirar_print('dmg', 0.3, 'images/print_dmg.png')
+        #texto = image_processor.ler_texto_imagem('print_dmg')
+        #print(texto)
             
-        game_processor.focar_janela('main.py - Auto Test Rag - Visual Studio Code [Administrator]')
+        #game_processor.focar_janela('main.py - Auto Test Rag - Visual Studio Code [Administrator]')
+        game_processor.focar_janela('images')
 
 if __name__ == "__main__":
     main()

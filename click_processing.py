@@ -27,8 +27,8 @@ class ClickProcessor:
             if imageloc:
                 return imageloc
 
-    def FindClick(self,image):
-        image_found = self.img_processor.EncontrarImagem(image,0.7,)
+    def FindClick(self,image,limiar):
+        image_found = self.img_processor.EncontrarImagem(image,limiar)
         pyautogui.moveTo(image_found)
         pyautogui.click()
 

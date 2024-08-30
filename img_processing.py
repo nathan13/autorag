@@ -70,12 +70,13 @@ class ImageProcessor:
         if max_val >= limi:
             posicao_central = (max_loc[0] + largura // 2, max_loc[1] + altura // 2)
             print(max_loc, botao_original.shape[1], botao_original.shape[0])
-            print(f"Botão:{imagem} encontrado na posição: {posicao_central}")
+            print(f"Imagem:'{imagem}' encontrado na posição: {posicao_central}")
             return posicao_central
         else:
-            print(f"Botão:{imagem} não encontrado na tela.")
+            print(f"Imagem:'{imagem}' não encontrado na tela.")
             return None
-        
+
+    @staticmethod   
     def encontrar_print(imagem, limiar):
         """Encontra a imagem na tela e retorna a posição e tamanho da melhor correspondência encontrada."""
         # Carrega a imagem de referência
@@ -104,6 +105,7 @@ class ImageProcessor:
         else:
             print("Imagem não encontrada na tela.")    
 
+    @staticmethod
     def preprocessar_imagem(image):
             # Abre a imagem e converte para escala de cinza
         img = Image.open(f'images/{image}.png').convert('L')
@@ -112,7 +114,7 @@ class ImageProcessor:
         img = img.filter(ImageFilter.MedianFilter())
         
         # Binarização (Thresholding)
-        img = img.point(lambda x: 0 if x < 140 else 255, '1')
+        img = img.point(lambda x: 0 if x < 200 else 255, '1')
         
         # Opcional: Salvar a imagem preprocessada para ver o resultado
         img.save(f'images/preprocessada_{image}.png')
@@ -120,21 +122,14 @@ class ImageProcessor:
         
         return img
 
-    def ler_texto_imagem(self,image):
+    def ler_texto_imagem(self, image):
+        # Pré-processa a imagem
         img = self.preprocessar_imagem(image)
         
-        # Extrair texto da imagem
+        # Extrai o texto da imagem
         texto_bruto = pytesseract.image_to_string(img)
 
-        # Usar uma expressão regular para encontrar os padrões "DMG: {número}M" ou "DMG: {número}"
-        matches = re.findall(r'DMG:\s*\d+M?', texto_bruto)
-
-        if matches:
-            # Se encontrar o padrão, exibe o que foi encontrado
-            texto_filtrado = ' '.join(matches)
-        else:
-            # Se não encontrar o padrão, exibe todo o texto bruto
-            texto_filtrado = texto_bruto
-
-        print(f"Texto extraído e filtrado: {texto_filtrado}")
-        return texto_filtrado.strip()
+        # Exibe o texto extraído
+        print(f"Texto extraído: {texto_bruto.strip()}")
+        
+        return texto_bruto.strip()
