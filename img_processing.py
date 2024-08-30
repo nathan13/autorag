@@ -10,6 +10,7 @@ class ImageProcessor:
     def __init__(self,melhor_escala):
         self.melhor_escala = melhor_escala
 
+    @staticmethod
     def DefinirEscala(imagem):
         
         """Encontra a imagem em várias escalas e salva a melhor escala encontrada."""

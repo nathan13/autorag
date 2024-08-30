@@ -1,34 +1,34 @@
 import pyautogui
 import time
-from pywinauto import Application 
-import txt_processing
-import img_processing
 from click_processing import ClickProcessor
 from img_processing import ImageProcessor
-import game_processing
+from txt_processing import TextProcessor
+from game_processing import GameProcessor
+
 
 def main():
-    #PRESETS
+#PRESETS
     #1 = SNIPING | 2 = WOLF
-    build = 2
+    build = 1
     #0 = OFF | 1 = ON 
     hplock = 1
-    test = 1
-    #Inicio
-    #Definir a escala padrao
-    game_processing.focar_janela('Ragnarok Origin: ROO')
-    #melhor_escala = img_processing.DefinirEscala('escala')
+    test = 0
+ #Inicio
+#Criando instancias e definindo escala padrao
+    GameProcessor.focar_janela('Ragnarok Origin: ROO')
     melhor_escala = ImageProcessor.DefinirEscala('escala')
     image_processor = ImageProcessor(melhor_escala)
-    click_processor = ClickProcessor(melhor_escala)
+    game_processor = GameProcessor(image_processor)
+    click_processor = ClickProcessor(melhor_escala,image_processor)
+    txt_processor = TextProcessor()
 
     
 
     if test == 0:   
         while True:
             #Buffs iniciais
-            game_processing.Buffar('buff1', '5')
-            game_processing.Buffar('buff2', '6')
+            game_processor.Buffar('buff1', '5')
+            game_processor.Buffar('buff2', '6')
 
             #Telar para o teste
             telar2 = click_processor.FindClickWait('telar1','telar2')
@@ -36,13 +36,13 @@ def main():
             telar4 = click_processor.ClickWait(telar3,'telar4')
             click_processor.Click(telar4)
             time.sleep(2)
-            img_processing.WaitImage('escala',0.65)
+            image_processor.WaitImage('escala',0.65)
 
             #Buffando e Escolhendo o boss
             if build == 1:
-                game_processing.Buffar('buff3', '2')
+                game_processor.Buffar('buff3', '2')
             elif build == 2:
-                game_processing.Buffar('buff4', '1')
+                game_processor.Buffar('buff4', '1')
             
             mvp2 = click_processor.FindClickWait('mvp1','mvp2')
             mvp3 = click_processor.ClickWait(mvp2,'mvp3')
@@ -50,7 +50,7 @@ def main():
             while True:
                 click_processor.scroll(mvp4,-900,0.5)
                 time.sleep(1)
-                barao = img_processing.EncontrarImagem('barao1',0.7,melhor_escala)
+                barao = image_processor.EncontrarImagem('barao1',0.7)
                 if barao != None:
                     break
             click_processor.Click(barao)
@@ -71,38 +71,38 @@ def main():
             #Finalizando combate
             click_processor.FindClick('pause')
             time.sleep(0.5)
-            img_processing.tirar_print('dmg', 0.7, 'images/print_dmg.png')
-            img_processing.tirar_print('dps', 0.65, 'images/print_dps.png')
-            texto = img_processing.ler_texto_imagem('print_dmg')
-            txt_processing.salvar_texto_no_arquivo('resultado.txt', texto)
+            image_processor.tirar_print('dmg', 0.7, 'images/print_dmg.png')
+            image_processor.tirar_print('dps', 0.65, 'images/print_dps.png')
+            texto = image_processor.ler_texto_imagem('print_dmg')
+            txt_processor.salvar_texto_no_arquivo('resultado.txt', texto)
 
             # Lê os valores dos testes
-            valores = txt_processing.ler_testes_arquivo('resultado.txt')
+            valores = txt_processor.ler_testes_arquivo('resultado.txt')
             
             # Total de testes
             total_testes = len(valores)
             
             if valores:
                 # Calcula as estatísticas
-                media, maior_valor, menor_valor = txt_processing.calcular_estatisticas(valores)
+                media, maior_valor, menor_valor = txt_processor.calcular_estatisticas(valores)
                 
                 # Encontra os testes com maior e menor valor
-                maior_teste, menor_teste = txt_processing.encontrar_testes_maior_menor(valores)
+                maior_teste, menor_teste = txt_processor.encontrar_testes_maior_menor(valores)
                 
                 # Atualiza o arquivo com as informações
-                txt_processing.atualizar_arquivo('resultado.txt', total_testes, media, maior_valor, menor_valor, maior_teste, menor_teste)
+                txt_processor.atualizar_arquivo('resultado.txt', total_testes, media, maior_valor, menor_valor, maior_teste, menor_teste)
 
             #Voltando para o inicio
             voltar2 = click_processor.FindClickWait('voltar1','voltar2')
             click_processor.Click(voltar2)
             time.sleep(2)
-            img_processing.WaitImage('escala',0.65)
+            image_processor.WaitImage('escala',0.65)
     else:
         #teste
 
-        pyautogui.moveTo(image_processor.EncontrarImagem('escala',0.7))
+        game_processor.Buffar('buff1','5')
             
-        #game_processing.focar_janela('main.py - Auto Test Rag - Visual Studio Code [Administrator]')
+        game_processor.focar_janela('main.py - Auto Test Rag - Visual Studio Code [Administrator]')
 
 if __name__ == "__main__":
     main()

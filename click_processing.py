@@ -1,10 +1,10 @@
 import pyautogui
 import time
-import img_processing
 
 class ClickProcessor:
-    def __init__(self,melhor_escala):
+    def __init__(self,melhor_escala,img_processor):
         self.melhor_escala = melhor_escala
+        self.img_processor = img_processor
 
     def scroll(self,image,range,durate):
         pyautogui.moveTo(image)
@@ -20,7 +20,7 @@ class ClickProcessor:
             time.sleep(0.2)
 
             for i in range(10):
-                imageloc = img_processing.EncontrarImagem(image2, 0.7,self.melhor_escala)
+                imageloc = self.img_processor.ImageProcessor.EncontrarImagem(image2, 0.7)
                 if imageloc:
                     break
                 time.sleep(0.5)
@@ -28,13 +28,13 @@ class ClickProcessor:
                 return imageloc
 
     def FindClick(self,image):
-        image_found = img_processing.EncontrarImagem(image,0.7,self.melhor_escala)
+        image_found = self.img_processor.EncontrarImagem(image,0.7,)
         pyautogui.moveTo(image_found)
         pyautogui.click()
 
     def FindClickWait(self,image1,image2):
         while True:
-            image1loc = img_processing.EncontrarImagem(image1,0.7,self.melhor_escala)
+            image1loc = self.img_processor.EncontrarImagem(image1,0.7)
             image2loc = self.ClickWait(image1loc,image2)
             return image2loc    
 
@@ -45,7 +45,7 @@ class ClickProcessor:
             time.sleep(0.2)
 
             for i in range(10):
-                imageloc = img_processing.EncontrarImagem(image2, 0.7,self.melhor_escala)
+                imageloc = self.img_processor.EncontrarImagem(image2, 0.7)
                 if imageloc:
                     break
             if imageloc:
