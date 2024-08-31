@@ -3,7 +3,7 @@ import cv2
 import numpy as np
 from PIL import Image,ImageFilter
 import pytesseract
-import re
+from PIL import Image, ImageEnhance, ImageFilter
 
 
 class ImageProcessor:
@@ -106,30 +106,46 @@ class ImageProcessor:
             print("Imagem não encontrada na tela.")    
 
     @staticmethod
-    def preprocessar_imagem(image):
-            # Abre a imagem e converte para escala de cinza
-        img = Image.open(f'images/{image}.png').convert('L')
+    def preprocessar_imagem(image_path):
+        """
+        Preprocessa a imagem para melhorar a extração de números e pontos. Ajusta o contraste, aplica filtros e converte a imagem para binária.
+        """
+        img = Image.open(f"images/{image_path}.png")
         
-        # Aplicar filtro para remover ruídos (opcional)
-        img = img.filter(ImageFilter.MedianFilter())
-        
+
+
+        # Converte para escala de cinza
+        img = img.convert('L')
+
+        # Ajuste de contraste
+        enhancer = ImageEnhance.Contrast(img)
+        img = enhancer.enhance(2.0)  # Ajuste o valor conforme necessário
+
+        # Aplicar filtro para realçar bordas
+        img = img.filter(ImageFilter.FIND_EDGES)
+
         # Binarização (Thresholding)
-        img = img.point(lambda x: 0 if x < 200 else 255, '1')
+        threshold = 70 #180 Ajuste o valor do limiar conforme necessário
+        img = img.point(lambda p: 255 if p > threshold else 0)
         
-        # Opcional: Salvar a imagem preprocessada para ver o resultado
-        img.save(f'images/preprocessada_{image}.png')
-        img.save(f'images/imgs bug/preprocessada_{image}.png')
+        img = img.resize((img.width * 20, img.height * 20), Image.Resampling.LANCZOS)
+
+        # Salvar a imagem preprocessada para análise
+        img.save(f'images/preprocessada_{image_path}.png')
+        print(f"Imagem preprocessada salva em: images/preprocessada_{image_path}.png")
         
         return img
 
-    def ler_texto_imagem(self, image):
-        # Pré-processa a imagem
-        img = self.preprocessar_imagem(image)
+    def ler_texto_imagem(self, image_path):
+        """
+        Lê todos os números e pontos da imagem usando pytesseract.
+        """
+        img = self.preprocessar_imagem(image_path)
         
-        # Extrai o texto da imagem
-        texto_bruto = pytesseract.image_to_string(img)
-
-        # Exibe o texto extraído
+        # Usar pytesseract para extrair o texto da imagem
+        custom_config = r'--oem 3 --psm 6 outputbase digits'  # Configuração para OCR focada em números
+        texto_bruto = pytesseract.image_to_string(img, config=custom_config)
+        
         print(f"Texto extraído: {texto_bruto.strip()}")
         
         return texto_bruto.strip()

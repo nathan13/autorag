@@ -99,12 +99,12 @@ def main():
     else:
         #teste
 
-        image_processor.tirar_print('dmg', 0.3, 'images/print_dmg.png')
-        #texto = image_processor.ler_texto_imagem('print_dmg')
-        #print(texto)
+        #image_processor.tirar_print('dmg', 0.2, 'images/print_dmg.png')
+        texto = image_processor.ler_texto_imagem('print_dmg')
+        print(texto)
             
-        #game_processor.focar_janela('main.py - Auto Test Rag - Visual Studio Code [Administrator]')
-        game_processor.focar_janela('images')
+        game_processor.focar_janela('main.py - Auto Test Rag - Visual Studio Code [Administrator]')
+        #game_processor.focar_janela('images')   
 
 if __name__ == "__main__":
     main()
