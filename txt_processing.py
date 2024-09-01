@@ -8,13 +8,13 @@ class TextProcessor:
         # Lê o arquivo e retorna o conteúdo
         with open(caminho_arquivo, 'r') as arquivo:
             conteudo = arquivo.read()
-        
-        # Extrai todos os valores após "DMG:"
-        valores = re.findall(r'DMG:\s*(\d+)M?', conteudo)
-        
-        # Converte os valores para inteiros
-        valores = [int(valor) for valor in valores]
-        
+
+        # Extrai todos os valores no novo padrão
+        valores = re.findall(r'Teste\s*\d+:\s*([\d\.]+)m', conteudo)
+
+        # Converte os valores para float
+        valores = [float(valor) for valor in valores]
+
         return valores
     
     @staticmethod

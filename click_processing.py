@@ -17,39 +17,36 @@ class ClickProcessor:
         while True:
             pyautogui.moveTo(image)
             pyautogui.click()
-            time.sleep(0.2)
-
-            for i in range(10):
-                imageloc = self.img_processor.ImageProcessor.EncontrarImagem(image2, 0.7)
-                if imageloc:
-                    break
-                time.sleep(0.5)
-            if imageloc:
-                return imageloc
-
-    def FindClick(self,image,limiar):
-        image_found = self.img_processor.EncontrarImagem(image,limiar)
-        pyautogui.moveTo(image_found)
-        pyautogui.click()
-
-    def FindClickWait(self,image1,image2):
-        while True:
-            image1loc = self.img_processor.EncontrarImagem(image1,0.7)
-            image2loc = self.ClickWait(image1loc,image2)
-            return image2loc    
-
-    def ClickWait(self,image,image2):
-        while True:
-            pyautogui.moveTo(image)
-            pyautogui.click()
-            time.sleep(0.2)
 
             for i in range(10):
                 imageloc = self.img_processor.EncontrarImagem(image2, 0.7)
                 if imageloc:
                     break
+                
             if imageloc:
                 return imageloc
+            else:
+                print(f"Imagem {image2} não encontrada")
+
+    def FindClick(self,image,limiar):
+        while True:
+            image_found = self.img_processor.EncontrarImagem(image,limiar)
+            if image_found:
+                pyautogui.moveTo(image_found)
+                pyautogui.click()
+                break
+            else:
+                print(f"Imagem {image} não encontrada")
+
+    def FindClickWait(self,image1,image2):
+        while True:
+            image1loc = self.img_processor.EncontrarImagem(image1,0.7)
+            if image1loc:
+                time.sleep(1)
+                image2loc = self.ClickWait(image1loc,image2)
+                return image2loc    
+            else:
+                print(f"Imagem {image1} não encontrada")
 
     def Click(self,image):
         pyautogui.moveTo(image)

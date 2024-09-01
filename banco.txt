@@ -1,45 +1,30 @@
-Core
-Teste 1:
-DMG: 1142M
-
-Teste 2:
-DMG: 1166M
-
-Teste 3:
-DMG: 1133M
-
-Teste 4:
-DMG: 1143M
-
-Teste 5:
-DMG: 1112M
-
-Teste 6:
-DMG: 1130M
-______________________________________
-Main
-Teste 1:
-DMG: 1141M
-
-Teste 2:
-DMG: 1137M
-
-Teste 3:
-DMG: 1120M
-
-Teste 4:
-DMG: 1157M
-
-Teste 5:
-DMG: 1153M
-
-Teste 6:
-DMG: 1137
-
-
+main
 --- Análise Atualizada ---
-Total de testes: 6
-Média dos valores: 1140.83
-Maior valor: 1157 (Teste 4)
-Menor valor: 1120 (Teste 3)
+Total de testes: 4
+Média dos valores: 1660.19
+Maior valor: 1672.17 (Teste 1)
+Menor valor: 1646.99 (Teste 3)
+Teste 1:
+1672.17m
 
+Teste 2:
+1657.4m
+
+Teste 3:
+1646.99m
+
+Teste 4:
+1664.19m
+__________________________________________
+
+Teste 1:
+1654.03m
+
+Teste 2:
+1673.94m
+
+Teste 3:
+1657.82m
+
+Teste 4:
+1695.58m

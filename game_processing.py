@@ -19,9 +19,8 @@ class GameProcessor:
     def Buffar(self,image, num):
         while True:
             imageloc = self.img_processor.EncontrarImagem(image, 0.75)
-            if imageloc != None:
+            if imageloc:
                 pyautogui.press(num)
-                time.sleep(0.3)
-            else:
                 time.sleep(0.5)
+            else:
                 break
