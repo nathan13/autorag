@@ -42,11 +42,16 @@ class ImageProcessor:
                 print(f"Imagem encontrada com escala {escala:.2f}, correlação: {max_val:.2f}")
                 return melhor_escala
 
-    def WaitImage(self,image,limiar):
-        while True:
-            imageloc = self.EncontrarImagem(image, limiar)
+    def WaitImage(self,image,limi,times):
+        if times == 0:
+            times = 999
+
+        for i in range(times):
+            imageloc = self.EncontrarImagem(image, limi)
             if imageloc:
-                break
+                return imageloc
+        return imageloc
+
 
     def EncontrarImagem(self,imagem, limi):
         """Encontra a imagem na tela usando apenas a escala salva."""
@@ -117,7 +122,11 @@ class ImageProcessor:
         #img = img.convert('L')
         # Aplicar filtro para realçar bordas
         #mg = img.filter(ImageFilter.FIND_EDGES)
-        img = img.resize((img.width * 35, img.height * 35), Image.Resampling.LANCZOS)
+        img = img.convert('L')
+        #enhancer = ImageEnhance.Contrast(img)
+        #img = enhancer.enhance(2.0)  # Ajuste o fator de contraste conforme necessário
+        #img = img.filter(ImageFilter.MedianFilter())  # Aplicar filtro para remoção de ruído
+        img = img.resize((img.width * 10, img.height * 10), Image.Resampling.LANCZOS)
 
         
 

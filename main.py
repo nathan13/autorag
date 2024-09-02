@@ -10,16 +10,19 @@ import os
 def main():
 #PRESETS
     #limiar padrao
-    limi = 0.7
+    limi = 0.9
     #How many tests
-    tests = 2
-    #1 = SNIPING | 2 = WOLF
-    build = 2
+    tests = 3
+    #'ss' = sniping shot  | 'warg' = wolf build
+    build = 'warg'
+    #'barao' or 'sk'
+    mvp = 'barao'
     #0 = OFF | 1 = ON 
     hplock = 1
     test = 0
-    #combat time
-    combat_time = 60
+    #combat time "1min" or "30seg"
+    combat_time = '1min'
+    combat_time2 = 60
 
  
  #Inicio
@@ -34,53 +37,62 @@ def main():
   
         for i in range(tests) :
             #Buffs iniciais
-            game_processor.Buffar('buff1', '5')
-            game_processor.Buffar('buff2', '6')
+            #game_processor.Buffar('steady_focus_buff', '5')
+            #game_processor.Buffar('true_sight_buff', '6')
+            click_processor.FindClick('steady_focus_skill',limi)
+            click_processor.FindClick('true_sight_skill',limi)
 
-            #Telar para o teste
-            telar2 = click_processor.FindClickWait('telar1','telar2')
-            telar3 = click_processor.ClickWait(telar2,'telar3')
-            telar4 = click_processor.ClickWait(telar3,'telar4')
-            click_processor.Click(telar4)
-            image_processor.WaitImage('mvp1',0.65)
+            
+            #Telar para o teste        
+            def littleWalk():
+                pyautogui.keyDown('w')
+                pyautogui.keyUp('w')
+
+            #click_processor.FindClickWait('telar1',0.8,'telar2',0.88,'click',littleWalk)
+            click_processor.FindClick('telar1',0.8)
+            time.sleep(0.5)
+            click_processor.FindClick('telar2',0.8)
+            click_processor.FindClickWait('training_ground_button',limi,'solo_training_button',limi,'click')
+            
+            image_processor.WaitImage('down_arrow_button',limi,0)
 
             #Buffando e Escolhendo o boss
-            if build == 1:
-                game_processor.Buffar('buff3', '2')
+            if build == 'ss':
+                click_processor.FindClick('warg_companion_skill',limi)
 
-            mvp2 = click_processor.FindClickWait('mvp1','mvp2')
-            mvp3 = click_processor.ClickWait(mvp2,'mvp3')
-            mvp4 = click_processor.ClickWait(mvp3,'mvp4')
-            while True:
-                click_processor.scroll(mvp4,-900,0.5)
-                barao = image_processor.EncontrarImagem('barao1',0.7)
-                if barao != None:
-                    break
-            click_processor.Click(barao)
-            mvp9 = click_processor.FindClickWait('mvp8','mvp9')
-            click_processor.Click(mvp9)
-            click_processor.FindClick('mvp10',0.7)
+            click_processor.FindClickWait('down_arrow_button',limi,'mvp_challenge_button',limi,'click')
+            click_processor.FindClickWait('select_mvp_button',limi,'select_mvp_image',limi,'notClick')
+            maya_name = image_processor.EncontrarImagem('maya_name',limi)
+            click_processor.scroll(maya_name,-900,0.5,mvp,limi)
+            time.sleep(0.5)
+            click_processor.FindClickWait(f'{mvp}1',limi,f'{mvp}2',limi,'notClick')
+
+            click_processor.FindClickWait('mvp_confirm_button',limi,'restart_button',limi,'click')
+            click_processor.FindClickWait('pauseAI_button',0.8,'recoverAI_button',0.8,'notClick')         
             if hplock == 1:
-                click_processor.FindClick('hplock',0.7)
+                click_processor.FindClickWait('hpLock_button',0.8,'cancel_hpLock_button',0.8,'notClick')
 
             #Iniciar o combate
             pyautogui.keyDown('w')
             time.sleep(0.7)
             pyautogui.keyUp('w')
-            pyautogui.press('k')
-            image_processor.WaitImage("dmg",0.2)
-            time.sleep(combat_time + 0.7)
-            #WaitImage('30seg',0.89)
+            while True:
+                pyautogui.press('k')
+                combat_started_button = image_processor.EncontrarImagem('combat_started_button',0.7)
+                if combat_started_button:
+                    break
+
+            pause_button_loc = image_processor.WaitImage('pause',limi,0)
 
             #Finalizando combate
-            click_processor.FindClick('pause',0.7)
-            time.sleep(0.5)
-            image_processor.tirar_print('dmg', 0.2, 'images/print_dmg.png')
+            #image_processor.WaitImage(combat_time,0.8,0)
+            image_processor.WaitImage('battle_started_image',0.8,0)
+            time.sleep(combat_time2-0.5)
+            click_processor.Click(pause_button_loc)
+            image_processor.tirar_print('dmg2', 0.2, 'images/print_dmg.png')
 
             #Voltando para o inicio
-            voltar2 = click_processor.FindClickWait('voltar1','voltar2')
-            click_processor.Click(voltar2)
-
+            click_processor.FindClickWait('voltar1_button',limi,'voltar_confirm_button',limi,'click') 
             texto = image_processor.ler_texto_imagem('print_dmg')
             txt_processor.salvar_texto_no_arquivo('resultado.txt', texto)
 
@@ -100,30 +112,44 @@ def main():
                 # Atualiza o arquivo com as informações
                 txt_processor.atualizar_arquivo('resultado.txt', total_testes, media, maior_valor, menor_valor, maior_teste, menor_teste)
 
+            image_processor.WaitImage('escala',limi,0)
             
-            image_processor.WaitImage('escala',0.65)
         print(f"Tests Performed: {tests}\nEnd------------------------------------------------------------------------------")
         os.startfile('C:/Users/Nathan/Documents/programming/Python/Auto Test Rag/resultado.txt')
         game_processor.focar_janela('main.py - Auto Test Rag - Visual Studio Code [Administrator]')
         game_processor.focar_janela('resultado - Bloco de Notas')
+    
     else:
         #Criando instancias e definindo escala padrao
         GameProcessor.focar_janela('Ragnarok Origin: ROO')
         melhor_escala = ImageProcessor.DefinirEscala('escala')
         image_processor = ImageProcessor(melhor_escala)
         game_processor = GameProcessor(image_processor)
-        game_processor.focar_janela('main.py - Auto Test Rag - Visual Studio Code [Administrator]')
+        #game_processor.focar_janela('main.py - Auto Test Rag - Visual Studio Code [Administrator]')
         click_processor = ClickProcessor(melhor_escala,image_processor)
         txt_processor = TextProcessor()
 
         #teste
-        #image_processor.tirar_print('dmg', 0.2, 'images/print_dmg.png')
-        texto = image_processor.ler_texto_imagem('print_dmg')
-        #os.startfile('C:\Users\Nathan\Documents\programming\Python\Auto Test Rag\resultado.txt')
+        #image_processor.tirar_print('dmg2', 0.2, 'images/print_dmg.png')
         #game_processor.focar_janela('main.py - Auto Test Rag - Visual Studio Code [Administrator]')
+        #texto = image_processor.ler_texto_imagem('print_dmg')
+        click_processor.FindClickWait('down_arrow_button',limi,'mvp_challenge_button',limi,'click')
+        click_processor.FindClickWait('select_mvp_button',limi,'select_mvp_image',limi,'notClick')
+        maya_name = image_processor.EncontrarImagem('maya_name',limi)
+        click_processor.scroll(maya_name,-900,0.5,mvp,limi)
+        time.sleep(0.5)
+        click_processor.FindClickWait(f'{mvp}1',limi,f'{mvp}2',limi,'notClick')
+        game_processor.focar_janela('main.py - Auto Test Rag - Visual Studio Code [Administrator]')
+        
+
+
+        #WaitImage('30seg',0.89)
+
+        #os.startfile('C:\Users\Nathan\Documents\programming\Python\Auto Test Rag\resultado.txt')
+        
         #game_processor.focar_janela('resultado - Bloco de Notas')
         #txt_processor.salvar_texto_no_arquivo('resultado.txt', texto)
-        print(texto)
+        #print(texto)
 
         
         #game_processor.focar_janela('images')   

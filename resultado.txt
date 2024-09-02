@@ -1,20 +1,15 @@
 --- Análise Atualizada ---
-Total de testes: 4
-Média dos valores: 1439.30
-Maior valor: 1532.58 (Teste 4)
-Menor valor: 1389.21 (Teste 2)
-
-
+Total de testes: 3
+Média dos valores: 1601.71
+Maior valor: 1656.97 (Teste 3)
+Menor valor: 1563.74 (Teste 1)
 
 Teste 1:
-1409.36m
+1563.74m
 
 Teste 2:
-1389.21m
+1584.42m
 
 Teste 3:
-1426.03m
-
-Teste 4:
-1532.58m
+1656.97m
 

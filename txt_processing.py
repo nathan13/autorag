@@ -5,7 +5,7 @@ class TextProcessor:
 
     @staticmethod
     def ler_testes_arquivo(caminho_arquivo):
-        # Lê o arquivo e retorna o conteúdo
+        # Lê o arquivo e retorna o conteúdo 
         with open(caminho_arquivo, 'r') as arquivo:
             conteudo = arquivo.read()
 
